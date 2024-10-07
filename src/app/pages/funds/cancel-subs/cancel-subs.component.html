@@ -1,0 +1,74 @@
+<div class="h-full pt-10">
+  <div class="flex text-center justify-center">
+    <span class="text-4xl text-[#001E61] font-bold tracking-wide">Cancelar Suscripción</span>
+  </div>
+
+  <div class="flex justify-center mt-10">
+  
+    <form nz-form [formGroup]="validateForm"
+          (ngSubmit)="submitForm()" class="w-full">
+          
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="userName">Usuario</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingresa tu usuario">
+          <nz-input-group>
+            <input type="text" nz-input formControlName="userName" autocomplete="off"/>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="fundName">Fondo</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor selecciona un fondo">
+          <nz-select formControlName="fundName" nzPlaceHolder="Selecciona un fondo">
+            <nz-option *ngFor="let fund of funds" [nzValue]="fund.value" [nzLabel]="fund.label"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item nz-row>
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <button nz-button nzType="primary">Enviar</button>
+        </nz-form-control>
+      </nz-form-item>
+
+    </form>
+    
+  </div>
+
+</div>
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  nzClosable=false
+  nzMaskClosable=false
+  (nzOnCancel)="handleCancel()">
+<ng-template #modalContent>
+  <div *ngIf="loadingTransactions" class="min-h-48 flex justify-center items-center">
+    <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+  </div>
+  <div *ngIf="!loadingTransactions">
+    <nz-result *ngIf="!successfulTransaction"
+      nzTitle="Ha ocurrido un error inesperado"
+      nzStatus="error">
+      <div nz-result-content class="flex justify-center text-center">
+        <p class="text-base"><span class="bold">Descripción: </span>{{errorMsg}}</p>
+      </div>
+    </nz-result>
+    <nz-result *ngIf="successfulTransaction"
+      nzTitle="Operación exitosa!"
+      nzStatus="success">
+      <div nz-result-content class="flex justify-center text-center">
+        <p class="text-base">Se hará efectiva la devolución de un monto de $ {{ result.amount }}</p>
+      </div>
+    </nz-result>
+  </div>
+</ng-template>
+
+<ng-template #modalFooter>
+  <button nz-button nzType="primary" (click)="handleCancel()" [disabled]="loadingTransactions">Cerrar</button>
+</ng-template>
+
+</nz-modal>

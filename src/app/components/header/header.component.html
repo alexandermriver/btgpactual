@@ -1,0 +1,51 @@
+<!-- <div class="w-full h-20 flex items-center justify-center shadow">
+  <img src="assets/logos/btg-pactual-logo.png" class="h-14" alt="Logo">
+  <ul nz-menu nzMode="horizontal">
+    <li *ngFor="let menu of menus" nz-submenu [nzTitle]="menu.title" [nzDisabled]="menu.disabled">
+      <ul>
+        <li *ngFor="let option of menu.options" nz-menu-item 
+            [routerLink]="option.routerLink"
+            [nzSelected]="option.selected">
+          {{ option.label }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div> -->
+
+
+<div class="w-full h-20 flex items-center justify-center shadow">
+  <img src="assets/logos/btg-pactual-logo.png" class="h-14" alt="Logo">
+
+  <!-- Menú en pantallas grandes -->
+  <ul nz-menu nzMode="horizontal" class="menu-desktop">
+    <li *ngFor="let menu of menus" nz-submenu [nzTitle]="menu.title" [nzDisabled]="menu.disabled">
+      <ul>
+        <li *ngFor="let option of menu.options" nz-menu-item 
+            [routerLink]="option.routerLink"
+            [nzSelected]="option.selected">
+          {{ option.label }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <button class="menu-mobile ml-5" nz-button nzType="primary" nz-dropdown nz-dropdown [nzDropdownMenu]="menu">
+    <i nz-icon nzType="menu" nzTheme="outline"></i>
+    <span>Menu</span>
+  </button>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu nzMode="vertical">
+      <li *ngFor="let menu of menus" nz-submenu [nzTitle]="menu.title" [nzDisabled]="menu.disabled">
+        <ul>
+          <li *ngFor="let option of menu.options" nz-menu-item 
+              [routerLink]="option.routerLink"
+              [nzSelected]="option.selected">
+            {{ option.label }}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+
+</div>

@@ -1,0 +1,88 @@
+<div class="h-full text-center pt-10">
+  <span class="text-4xl text-[#001E61] font-bold tracking-wide">Historial de Transacciones</span>
+  
+  <form nz-form [formGroup]="validateForm" class="mt-10 justify-center"  
+        (ngSubmit)="submitForm()" [nzLayout]="'inline'">
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Por favor ingresa tu usuario">
+        <nz-input-group nzPrefixIcon="user">
+          <input type="text" nz-input formControlName="userName" 
+                placeholder="Username" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <button nz-button [nzType]="'primary'">Buscar</button>
+  </form>
+
+  <div class="flex justify-center">
+    <div class="custom-width">
+      <nz-table ngSkipHydration
+        #basicTable
+        [nzScroll]="{ x: '800px' }"
+        [nzData]="transactionsList" 
+        [nzPageSize]="5"
+        [nzShowSizeChanger]="true"
+        [nzPageSizeOptions]="[5, 10, 20, 50]"
+        [nzBordered]="true"
+        [nzTotal]="totalItems"
+        [nzShowTotal]="totalTemplate"
+        [nzLoading]="loadingTransactions"
+        class="mt-5">
+        <ng-template #totalTemplate let-range="range">
+          Total elementos, mostrando {{ range[1] }} de {{ totalItems }}
+        </ng-template>
+        
+        <thead>
+          <tr>
+            <th id="Id" nzWidth="28%" class="font-extrabold text-center">Id Transacción</th>
+            <th id="Fondo" nzWidth="22%" class="font-extrabold ">Fondo</th>
+            <th id="Acción" nzWidth="15%" class="font-extrabold">Tipo Acción</th>
+            <th id="Monto" nzWidth="15%" class="font-extrabold">Monto</th>
+            <th id="Fecha" nzWidth="20%" class="font-extrabold">Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td [nzEllipsis]="true">
+              {{ data.transactionId }}
+            </td>
+            <td [nzEllipsis]="true">
+              {{ data.fundName }}
+            </td>
+            <td [nzEllipsis]="true" class="text-center">
+              {{ data.transactionType }}
+            </td>
+            <td class="text-center">
+              $ {{ data.amount }}
+            </td>
+            <td [nzEllipsis]="true" class="text-center">
+              <span class="ml-1">{{ formatDate(data?.date) }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+
+</div>
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel()">
+<ng-template #modalTitle>Error!</ng-template>
+<ng-template #modalContent>
+  <nz-result
+    nzTitle="Ha ocurrido un error inesperado"
+    nzStatus="error">
+    <div nz-result-content class="flex justify-center">
+      <p class="text-base"><span class="bold">Descripción: </span>{{errorMsg}}</p>
+    </div>
+  </nz-result>
+</ng-template>
+<ng-template #modalFooter>
+  <button nz-button nzType="primary" (click)="handleCancel()">Cerrar</button>
+</ng-template>
+</nz-modal>
